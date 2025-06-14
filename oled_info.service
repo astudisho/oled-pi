@@ -1,0 +1,16 @@
+[Unit]
+Description=OLED Connectivity Info Display
+After=network-online.target
+
+[Service]
+# This line points to the Python interpreter INSIDE your virtual environment
+ExecStart=/home/astudillo/Documents/Programacion/Python/Screen/.venv/bin/python3 /home/astudillo/Documents/Programacion/Python/Screen/screen.py
+Restart=always
+#User=astudillo  # Make sure this matches your username
+WorkingDirectory=/home/astudillo/Documents/Programacion/Python/Screen
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
