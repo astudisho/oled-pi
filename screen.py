@@ -13,7 +13,7 @@ from luma.core import const
 # from PIL import ImageFont
 
 
-fontSize = 8
+fontSize = 10
 
 # font = ImageFont.truetype("path/to/my/font.ttf", fontSize)
 
@@ -79,6 +79,12 @@ def get_ipv6_address(ifname):
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
 
+def get_cpu_temp():
+    with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
+        temp_millideg = int(f.read())
+    return temp_millideg / 1000.0  # Convert to Celsius
+
+
 # Main loop to update the display
 while True:
     ip_eth0 = get_ip_address('eth0')
@@ -86,6 +92,9 @@ while True:
     ssid = get_wifi_ssid()
     internet = check_internet_connectivity()
     ipv6_eth0 = get_ipv6_address('eth0')
+    temp = get_cpu_temp()
+
+    print("Temp: ",temp)
 
     with canvas(device) as draw:
         # Clear previous content (important for OLED)pyu
@@ -116,9 +125,12 @@ while True:
             draw.text((0, y_offset), "Wif: Disconnected", fill="white")            
 
         if ssid != "N/A":
-             print("SSID: ", ssid)
-             draw.text((0, y_offset), f"SSID: {ssid}", fill="white")
-             y_offset += line_height
+            draw.text((0, y_offset), f"SSID: {ssid}", fill="white")
+            y_offset += line_height
+
+        if temp:
+            draw.text((0, y_offset), f"Temp: {temp} °C", fill="white")
+            y_offset += line_height
 
         
         
