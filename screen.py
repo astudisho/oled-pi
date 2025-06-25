@@ -4,6 +4,7 @@ import socket
 import fcntl
 import struct
 import subprocess
+from datetime import datetime
 
 from luma.core.interface.serial import i2c
 from luma.core.render import canvas
@@ -94,6 +95,8 @@ while True:
     ipv6_eth0 = get_ipv6_address('eth0')
     temp = get_cpu_temp()
 
+    current_time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
+
     print("Temp: ",temp)
 
     with canvas(device) as draw:
@@ -132,7 +135,9 @@ while True:
             draw.text((0, y_offset), f"Temp: {temp} °C", fill="white")
             y_offset += line_height
 
-        
+        if current_time:
+            draw.text((0, y_offset), f"Time: {current_time}", fill="white")
+            y_offset += line_height       
         
 
     time.sleep(5) # Update every 5 seconds
