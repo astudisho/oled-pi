@@ -71,15 +71,19 @@ After saving both screen.py and oled_info.service, run these commands to make th
 
 Bash
 
+```
 sudo systemctl daemon-reload   # Reload systemd to recognize the new service file
 sudo systemctl enable oled_info.service # Enable the service to start on boot
 sudo systemctl start oled_info.service # Start the service immediately
+```
 
 ### 7. Check Service Status and Logs
 To verify if the service is running correctly and to see any debug output or errors, use:
 
 Bash
 
+```
 sudo systemctl status oled_info.service
 journalctl -u oled_info.service -f
 The journalctl -f command will show you the real-time output from your script, including the DEBUG: lines, which are invaluable for troubleshooting.
+```
